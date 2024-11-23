@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['hole']
+
+roboflow:
+  workspace: hamzaferoze115-gmail-com
+  project: hole_detection-cou3s
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/hamzaferoze115-gmail-com/hole_detection-cou3s/dataset/1
