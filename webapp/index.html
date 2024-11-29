@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarBots Coffee</title>
+    <!-- Add EventEmitter2 dependency first -->
+    <!-- ROS Libraries -->
+    <link rel="stylesheet" href="styles.css">
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/easeljs/lib/easeljs.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/eventemitter2/lib/eventemitter2.min.js"></script>
+    <script type="text/javascript" src="https://s3.eu-west-1.amazonaws.com/rosject.io/js/roslib.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/ros2d/build/ros2d.min.js"></script>
+
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">☕ StarBots Coffee</div>
+            <div class="nav-links">
+                <a href="#menu">Menu</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ROSbridge Connection Bar -->
+    <div class="ros-connection">
+        <input type="text" id="bridge-address" class="ros-input" placeholder="Enter ROSbridge URL">
+        <button onclick="connectToBridge()" class="connect-btn">Connect</button>
+        <div id="ros-status" class="status disconnected">Disconnected</div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div id="loading-text">Robot is preparing your order...</div>
+    </div>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Crafted by Robots,<br><span class="accent">Perfected for Humans</span></h1>
+            <p>Experience precision-crafted coffee in a warm, inviting atmosphere where technology meets tradition.</p>
+        </div>
+    </section>
+
+    <section id="menu" class="menu">
+        <h2>Our Signature Menu</h2>
+        <div id="simulation-menu-container" class="menu-container"></div>
+
+        <h2 class="mt-12">Our Special Collection</h2>
+        <div id="real-menu-container" class="menu-container"></div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 StarBots Coffee. All rights reserved.</p>
+    </footer>
+
+
+    <script>
+        let ros;
+        let isRobotBusy = false;
+
+        function connectToBridge() {
+            const bridgeAddress = document.getElementById('bridge-address').value.trim();
+
+            if (!bridgeAddress) {
+                alert('Please enter a ROSbridge URL');
+                return;
+            }
+
+            const statusElement = document.getElementById('ros-status');
+
+            if (ros) {
+                ros.close();
+            }
+
+            try {
+                ros = new ROSLIB.Ros({
+                    url: bridgeAddress
+                });
+
+                ros.on('connection', function () {
+                    statusElement.textContent = 'Connected';
+                    statusElement.classList.remove('disconnected');
+                    statusElement.classList.add('connected');
+                });
+
+                ros.on('error', function (error) {
+                    statusElement.textContent = 'Error';
+                    statusElement.classList.remove('connected');
+                    statusElement.classList.add('disconnected');
+                });
+
+                ros.on('close', function () {
+                    statusElement.textContent = 'Disconnected';
+                    statusElement.classList.remove('connected');
+                    statusElement.classList.add('disconnected');
+                });
+
+            } catch (error) {
+                statusElement.textContent = 'Error';
+                statusElement.classList.remove('connected');
+                statusElement.classList.add('disconnected');
+            }
+        }
+
+        function orderItem(itemName) {
+            if (!ros || !ros.isConnected) {
+                alert('Please connect to ROSbridge first to place an order!');
+                return;
+            }
+
+            if (isRobotBusy) {
+                alert('Robot is currently busy with another order. Please wait.');
+                return;
+            }
+
+            isRobotBusy = true;
+            document.getElementById('loading-overlay').style.display = 'flex';
+
+            const orderTopic = new ROSLIB.Topic({
+                ros: ros,
+                name: '/coffee_orders',
+                messageType: 'std_msgs/String'
+            });
+
+            // Simply send the drink name
+            const order = new ROSLIB.Message({
+                data: itemName
+            });
+
+            // Subscribe to feedback
+            const feedbackTopic = new ROSLIB.Topic({
+                ros: ros,
+                name: '/robot_feedback',
+                messageType: 'std_msgs/String'
+            });
+
+            feedbackTopic.subscribe(function (message) {
+                if (message.data.includes('completed')) {
+                    isRobotBusy = false;
+                    document.getElementById('loading-overlay').style.display = 'none';
+                    alert(`Your ${itemName} is ready!`);
+                    feedbackTopic.unsubscribe();
+                } else if (message.data.includes('error')) {
+                    isRobotBusy = false;
+                    document.getElementById('loading-overlay').style.display = 'none';
+                    alert('There was an error preparing your order. Please try again.');
+                    feedbackTopic.unsubscribe();
+                }
+            });
+
+            orderTopic.publish(order);
+        }
+    </script>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
