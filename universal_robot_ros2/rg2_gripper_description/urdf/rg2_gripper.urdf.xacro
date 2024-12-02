@@ -112,7 +112,7 @@
                     <mesh filename="package://rg2_gripper_description/meshes/rg2_left_finger.stl" scale="1.0 1.0 1.0"/>
                 </geometry>
             </collision>
-            <contact_coefficients kd="1.0" kp="1000.0" mu="0"/>
+            <contact_coefficients kd="1.0" kp="1000.0" mu="1.0"/>
         </link>
 
         <gazebo reference="${prefix}_left_finger">
@@ -160,7 +160,7 @@
                     <mesh filename="package://rg2_gripper_description/meshes/rg2_left_thumb.stl" scale="1.0 1.0 1.0"/>
                 </geometry>
             </collision>
-            <contact_coefficients kd="1.0" kp="1000.0" mu="1000"  mu2="1000"/>
+            <contact_coefficients kd="1.0" kp="1000.0" mu="1.0"  mu2="1.0"/>
         </link>
 
 
@@ -205,7 +205,7 @@
                     <mesh filename="package://rg2_gripper_description/meshes/rg2_left_finger.stl" scale="1.0 1.0 1.0"/>
                 </geometry>
             </collision>
-            <contact_coefficients kd="1.0" kp="1000.0" mu="0"/>
+            <contact_coefficients kd="1.0" kp="1000.0" mu="1.0"/>
         </link>
 
         <gazebo reference="${prefix}_right_finger">
@@ -254,7 +254,7 @@
                     <mesh filename="package://rg2_gripper_description/meshes/rg2_left_thumb.stl" scale="1.0 1.0 1.0"/>
                 </geometry>
             </collision>
-            <contact_coefficients kd="1.0" kp="1000.0" mu="1000" mu2="1000"/>
+            <contact_coefficients kd="1.0" kp="1000.0" mu="1.0" mu2="1.0"/>
         </link>
         <!-- Added by Theconstruct-->
         <gazebo>

@@ -14,7 +14,7 @@ def generate_launch_description():
     # MoveItCpp demo executable
     moveit_cpp_node = Node(
         package='robot_trajectory_manipulation',
-        executable='hole_placement__real_4',
+        executable='hole_placement_real_4',
         name='hole_placement_real_4',
         output="screen",
         parameters=[

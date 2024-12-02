@@ -195,8 +195,11 @@ class HoleDetector(Node):
                     
                     # Calculate 3D position using camera matrix
                     image_point = np.array([[center_x, center_y]], dtype=np.float32)
+
                     undistorted_point = cv2.undistortPoints(image_point, self.camera_matrix, self.dist_coeffs)
+
                     homogeneous_point = cv2.convertPointsToHomogeneous(undistorted_point)
+
                     point_3d = homogeneous_point[0][0] * depth
                     
                     # Adjust for hole depth
@@ -258,3 +261,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+    

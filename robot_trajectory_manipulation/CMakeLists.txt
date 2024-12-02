@@ -73,6 +73,51 @@ ament_target_dependencies(hole_placement_2
   sensor_msgs
 )
 
+add_executable(hole_placement_3
+  src/hole_placement_3.cpp
+)
+ament_target_dependencies(hole_placement_3
+  rclcpp
+  moveit_core
+  moveit_ros_planning_interface
+  sensor_msgs
+  geometry_msgs
+  tf2_ros
+  tf2_geometry_msgs
+  moveit_msgs
+  sensor_msgs
+)
+
+add_executable(hole_placement_4
+  src/hole_placement_4.cpp
+)
+ament_target_dependencies(hole_placement_4
+  rclcpp
+  moveit_core
+  moveit_ros_planning_interface
+  sensor_msgs
+  geometry_msgs
+  tf2_ros
+  tf2_geometry_msgs
+  moveit_msgs
+  sensor_msgs
+)
+
+add_executable(hole_placement_real_2
+  src/hole_placement_real_2.cpp
+)
+ament_target_dependencies(hole_placement_real_2
+  rclcpp
+  moveit_core
+  moveit_ros_planning_interface
+  sensor_msgs
+  geometry_msgs
+  tf2_ros
+  tf2_geometry_msgs
+  moveit_msgs
+  sensor_msgs
+)
+
 add_executable(hole_placement_real_4
   src/hole_placement_real_4.cpp
 )
@@ -87,6 +132,7 @@ ament_target_dependencies(hole_placement_real_4
   moveit_msgs
   sensor_msgs
 )
+
 
 add_executable(coffee_order_handler src/coffee_order_handler.cpp)
 ament_target_dependencies(coffee_order_handler
@@ -120,6 +166,9 @@ install(TARGETS
   coffee_order_handler_real
   hole_placement_1
   hole_placement_2
+  hole_placement_3
+  hole_placement_4
+  hole_placement_real_2
   hole_placement_real_4
   planning_scene_real
   ARCHIVE DESTINATION lib
