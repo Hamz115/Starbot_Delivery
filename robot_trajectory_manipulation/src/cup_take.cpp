@@ -135,29 +135,8 @@ private:
   }
 
   void executeTaskSequence(double target_x, double target_y, double target_z) {
-    
-    execute_arm("home");
-    rclcpp::sleep_for(std::chrono::seconds(2));
 
     control_gripper("gripper_open");
-    rclcpp::sleep_for(std::chrono::seconds(2));
-
-    execute_arm("pre_grasp2");
-    rclcpp::sleep_for(std::chrono::seconds(2));
-
-    execute_arm("pre_grasp");
-    rclcpp::sleep_for(std::chrono::seconds(2));
-
-    execute_arm("grasp");
-    rclcpp::sleep_for(std::chrono::seconds(2));
-
-    control_gripper("gripper_close");
-    rclcpp::sleep_for(std::chrono::seconds(2));
-
-    execute_arm("pre_grasp");
-    rclcpp::sleep_for(std::chrono::seconds(2));
-
-    execute_arm("pre_grasp2");
     rclcpp::sleep_for(std::chrono::seconds(2));
 
     execute_arm("pre_grasp3");
@@ -166,36 +145,33 @@ private:
     execute_arm("after_grasp");
     rclcpp::sleep_for(std::chrono::seconds(2));
 
-
     navigate_to_position(target_x - 0.05, target_y + 0.02, 0.39, true);
     rclcpp::sleep_for(std::chrono::seconds(2));
 
-    navigate_to_position(target_x - 0.05, target_y + 0.02, target_z + 0.50, true);
+    navigate_to_position(target_x - 0.05, target_y + 0.02, target_z + 0.50,
+                         true);
     rclcpp::sleep_for(std::chrono::seconds(2));
 
-    navigate_to_position(target_x - 0.05, target_y + 0.02, target_z + 0.40, true);
+    navigate_to_position(target_x - 0.05, target_y + 0.02, target_z + 0.40,
+                         true);
     rclcpp::sleep_for(std::chrono::seconds(2));
 
-    navigate_to_position(target_x - 0.05, target_y + 0.02, target_z + 0.33, true);
+    navigate_to_position(target_x - 0.05, target_y + 0.02, target_z + 0.27,
+                         true);
     rclcpp::sleep_for(std::chrono::seconds(2));
 
-    navigate_to_position(target_x - 0.05, target_y + 0.02, target_z + 0.30, true);
-    rclcpp::sleep_for(std::chrono::seconds(2));
-
-
-    control_gripper("gripper_open");
+    control_gripper("gripper_close");
     rclcpp::sleep_for(std::chrono::seconds(2));
 
     // Return to previous position after opening gripper
     navigate_to_position(target_x, target_y, 0.37, true);
 
     execute_arm("after_grasp");
-    rclcpp::sleep_for(std::chrono::seconds(0));
+    rclcpp::sleep_for(std::chrono::seconds(2));
 
     execute_arm("pre_grasp3");
-    rclcpp::sleep_for(std::chrono::seconds(0));
+    rclcpp::sleep_for(std::chrono::seconds(2));
 
-    execute_arm("home");
   }
 
   void control_gripper(const std::string &target_name) {
@@ -250,7 +226,7 @@ private:
 
     moveit_msgs::msg::RobotTrajectory moveit_trajectory;
     const double jump_threshold = 0.0;
-    const double eef_step = 0.001;
+    const double eef_step = 0.005;
 
     double fraction = manipulator_group_->computeCartesianPath(
         waypoints, eef_step, jump_threshold, moveit_trajectory,
@@ -269,7 +245,7 @@ private:
           *manipulator_group_->getCurrentState(), moveit_trajectory);
 
       trajectory_processing::IterativeParabolicTimeParameterization time_param;
-      if (time_param.computeTimeStamps(robot_trajectory, 0.1, 0.1)) {
+      if (time_param.computeTimeStamps(robot_trajectory)) {
         RCLCPP_INFO(this->get_logger(), "Time parameterization successful");
 
         // Convert back to moveit_msgs::msg::RobotTrajectory for execution

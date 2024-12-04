@@ -123,7 +123,7 @@ private:
       RCLCPP_INFO(this->get_logger(), "Detected point %d: x=%f, y=%f, z=%f",
                   detected_points_, msg->x, msg->y, msg->z);
 
-      if (detected_points_ == 2) {
+      if (detected_points_ == 1) {
         executeTaskSequence(msg->x, msg->y, msg->z);
       }
 
@@ -250,7 +250,7 @@ private:
 
     moveit_msgs::msg::RobotTrajectory moveit_trajectory;
     const double jump_threshold = 0.0;
-    const double eef_step = 0.001;
+    const double eef_step = 0.002;
 
     double fraction = manipulator_group_->computeCartesianPath(
         waypoints, eef_step, jump_threshold, moveit_trajectory,

@@ -123,7 +123,7 @@ private:
       RCLCPP_INFO(this->get_logger(), "Detected point %d: x=%f, y=%f, z=%f",
                   detected_points_, msg->x, msg->y, msg->z);
 
-      if (detected_points_ == 2) {
+      if (detected_points_ == 3) {
         executeTaskSequence(msg->x, msg->y, msg->z);
       }
 
@@ -135,7 +135,7 @@ private:
   }
 
   void executeTaskSequence(double target_x, double target_y, double target_z) {
-    
+
     execute_arm("home");
     rclcpp::sleep_for(std::chrono::seconds(2));
 
@@ -167,21 +167,20 @@ private:
     rclcpp::sleep_for(std::chrono::seconds(2));
 
 
-    navigate_to_position(target_x - 0.05, target_y + 0.02, 0.39, true);
+    navigate_to_position(target_x - 0.04, target_y + 0.03, 0.39, true);
     rclcpp::sleep_for(std::chrono::seconds(2));
 
-    navigate_to_position(target_x - 0.05, target_y + 0.02, target_z + 0.50, true);
+    navigate_to_position(target_x - 0.04, target_y + 0.03, target_z + 0.50,
+                         true);
     rclcpp::sleep_for(std::chrono::seconds(2));
 
-    navigate_to_position(target_x - 0.05, target_y + 0.02, target_z + 0.40, true);
+    navigate_to_position(target_x - 0.04, target_y + 0.03, target_z + 0.40,
+                         true);
     rclcpp::sleep_for(std::chrono::seconds(2));
 
-    navigate_to_position(target_x - 0.05, target_y + 0.02, target_z + 0.33, true);
-    rclcpp::sleep_for(std::chrono::seconds(2));
-
-    navigate_to_position(target_x - 0.05, target_y + 0.02, target_z + 0.30, true);
-    rclcpp::sleep_for(std::chrono::seconds(2));
-
+    navigate_to_position(target_x - 0.04, target_y + 0.03, target_z + 0.29,
+                         true);
+    rclcpp::sleep_for(std::chrono::seconds(3));
 
     control_gripper("gripper_open");
     rclcpp::sleep_for(std::chrono::seconds(2));

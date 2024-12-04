@@ -103,6 +103,22 @@ ament_target_dependencies(hole_placement_4
   sensor_msgs
 )
 
+add_executable(hole_placement_real_1
+  src/hole_placement_real_1.cpp
+)
+ament_target_dependencies(hole_placement_real_1
+  rclcpp
+  moveit_core
+  moveit_ros_planning_interface
+  sensor_msgs
+  geometry_msgs
+  tf2_ros
+  tf2_geometry_msgs
+  moveit_msgs
+  sensor_msgs
+)
+
+
 add_executable(hole_placement_real_2
   src/hole_placement_real_2.cpp
 )
@@ -118,10 +134,41 @@ ament_target_dependencies(hole_placement_real_2
   sensor_msgs
 )
 
+add_executable(hole_placement_real_3
+  src/hole_placement_real_3.cpp
+)
+ament_target_dependencies(hole_placement_real_3
+  rclcpp
+  moveit_core
+  moveit_ros_planning_interface
+  sensor_msgs
+  geometry_msgs
+  tf2_ros
+  tf2_geometry_msgs
+  moveit_msgs
+  sensor_msgs
+)
+
+
 add_executable(hole_placement_real_4
   src/hole_placement_real_4.cpp
 )
 ament_target_dependencies(hole_placement_real_4
+  rclcpp
+  moveit_core
+  moveit_ros_planning_interface
+  sensor_msgs
+  geometry_msgs
+  tf2_ros
+  tf2_geometry_msgs
+  moveit_msgs
+  sensor_msgs
+)
+
+add_executable(cup_take
+  src/cup_take.cpp
+)
+ament_target_dependencies(cup_take
   rclcpp
   moveit_core
   moveit_ros_planning_interface
@@ -168,8 +215,11 @@ install(TARGETS
   hole_placement_2
   hole_placement_3
   hole_placement_4
+  hole_placement_real_1
   hole_placement_real_2
+  hole_placement_real_3
   hole_placement_real_4
+  cup_take
   planning_scene_real
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
