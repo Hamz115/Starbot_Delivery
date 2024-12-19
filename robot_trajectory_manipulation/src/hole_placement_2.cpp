@@ -95,8 +95,8 @@ private:
         createPose(0.2, 0.85, 0.2, 1.0));
 
     auto cup = createCollisionObject("portable_cup_2", "base_link",
-                               createSolidPrimitiveBOX(0.04, 0.05, 0.04), 
-                               createPose(14.16, -18.19, 1.025, 1.0));
+                                     createSolidPrimitiveBOX(0.04, 0.05, 0.04),
+                                     createPose(14.16, -18.19, 1.025, 1.0));
 
     collision_objects.push_back(barrier);
     collision_objects.push_back(platform);

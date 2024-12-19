@@ -1,62 +1,61 @@
 const simulationMenuItems = [
     {
-        title: 'Classic Espresso',
-        price: '$4.99',
-        description: 'Rich, full-bodied espresso with a perfect crema layer',
-        image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=400&h=300',
+        title: 'Spiced Pumpkin Latte',
+        price: '$5.49',
+        description: 'A warm blend of espresso, steamed milk, and spiced pumpkin flavor.',
+        image: 'images/Pumpkin.jpg',
         orderType: 'simulation'
     },
     {
-        title: 'Caramel Macchiato',
+        title: 'Hazelnut Mocha',
         price: '$5.99',
-        description: 'Smooth espresso with vanilla and caramel, topped with foam',
-        image: 'https://images.unsplash.com/photo-1485808191679-5f86510681a2?auto=format&fit=crop&q=80&w=400&h=300',
+        description: 'Rich espresso with steamed milk, chocolate, and hazelnut syrup.',
+        image: 'images/Hazelnut.jpg',
         orderType: 'simulation'
     },
     {
-        title: 'Matcha Latte',
+        title: 'Irish Cream Coffee',
+        price: '$5.49',
+        description: 'A creamy espresso drink with a touch of Irish cream flavor.',
+        image: 'images/Irish.webp',
+        orderType: 'simulation'
+    },
+    {
+        title: 'Cinnamon Dolce Latte',
         price: '$6.49',
-        description: 'Premium Japanese matcha blended with steamed milk',
-        image: 'https://images.unsplash.com/photo-1515823662972-da6a2e4d3002?auto=format&fit=crop&q=80&w=400&h=300',
-        orderType: 'simulation'
-    },
-    {
-        title: 'Vanilla Frappuccino',
-        price: '$5.99',
-        description: 'Creamy vanilla blend topped with whipped cream',
-        image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&q=80&w=400&h=300',
+        description: 'A comforting blend of espresso, steamed milk, and cinnamon dolce syrup, topped with whipped cream and cinnamon sugar.',
+        image: 'images/Cinnamon.jpg',
         orderType: 'simulation'
     }
 ];
 
-
 const realMenuItems = [
     {
-        title: 'Iced Americano',
-        price: '$4.49',
-        description: 'Espresso shots topped with cold water for a light and crisp finish',
-        image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&q=80&w=400&h=300',
-        orderType: 'real'
-    },
-    {
-        title: 'Mocha Latte',
+        title: 'Iced Coconut Caramel Latte',
         price: '$5.99',
-        description: 'Espresso with steamed milk, chocolate syrup, and whipped cream',
-        image: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&q=80&w=400&h=300',
+        description: 'A tropical twist with espresso, coconut milk, caramel and ice.',
+        image: 'images/Coconut.webp',
         orderType: 'real'
     },
     {
-        title: 'Chai Tea Latte',
-        price: '$5.49',
-        description: 'Black tea infused with spices and steamed milk',
-        image: 'https://images.unsplash.com/photo-1557006021-6d123e1a1302?auto=format&fit=crop&q=80&w=400&h=300',
-        orderType: 'real'
-    },
-    {
-        title: 'Caramel Frappe',
+        title: 'Iced Lavender Latte',
         price: '$6.49',
-        description: 'Blended coffee with caramel syrup, topped with whipped cream',
-        image: 'https://images.unsplash.com/photo-1586195831800-24f14c992cea?auto=format&fit=crop&q=80&w=400&h=300',
+        description: 'Chilled espresso with lavender syrup and creamy milk over ice.',
+        image: 'images/Lavender.jpg',
+        orderType: 'real'
+    },
+    {
+        title: 'Iced Mocha Mint',
+        price: '$5.99',
+        description: 'A refreshing espresso with mint, chocolate, milk, and ice.',
+        image: 'images/Mocha.jpg',
+        orderType: 'real'
+    },
+    {
+        title: 'Iced Honey Almond Latte',
+        price: '$6.49',
+        description: 'Smooth espresso with honey, almond milk, and a touch of ice.',
+        image: 'images/Almond.jpg',
         orderType: 'real'
     }
 ];
@@ -83,27 +82,6 @@ function createMenuItem(item, container) {
     `;
     
     container.appendChild(menuItem);
-    
-    // Add hover event handlers
-    const overlay = menuItem.querySelector('.robot-type-overlay');
-    const text = menuItem.querySelector('.robot-type-text');
-    let hoverTimeout;
-
-    menuItem.addEventListener('mouseenter', () => {
-        if (hoverTimeout) clearTimeout(hoverTimeout);
-        overlay.classList.add('show');
-        text.classList.add('show');
-        hoverTimeout = setTimeout(() => {
-            overlay.classList.remove('show');
-            text.classList.remove('show');
-        }, 1000);
-    });
-
-    menuItem.addEventListener('mouseleave', () => {
-        if (hoverTimeout) clearTimeout(hoverTimeout);
-        overlay.classList.remove('show');
-        text.classList.remove('show');
-    });
 }
 
 function populateMenu() {

@@ -145,10 +145,11 @@ body {
 }
 
 .menu-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     flex: 0 0 calc(25% - 1rem);
-    /* Each item takes up 25% minus the gap */
     min-width: 250px;
-    /* Minimum width to prevent items from getting too small */
     background: var(--secondary);
     border-radius: 1rem;
     overflow: hidden;
@@ -170,14 +171,121 @@ body {
 
 .menu-item img {
     width: 100%;
-    height: 200px;
+    height: 150px;
+    /* Set a fixed height for consistency */
     object-fit: cover;
+    /* Ensures the image scales and crops to fit the height */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    /* Optional: Adds a border for separation */
+}
+
+
+.invoice-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    color: black;
+    width: 50%;
+    /* Takes up 50% of the screen width */
+    height: 60%;
+    /* Takes up 60% of the screen height */
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+hr {
+    width: 90%;
+    border: 0;
+    border-top: 2px solid #ddd;
+    /* Soft gray for the separator */
+    margin: 20px 0;
+    /* Add spacing around lines */
+}
+
+.invoice-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.invoice-content img {
+    width: 80%;
+    /* Make the drink image take up most of the width */
+    max-height: 200px;
+    /* Limit the height */
+    object-fit: cover;
+    /* Ensures the image scales nicely */
+    border-radius: 10px;
+}
+
+.invoice-content h2 {
+    font-size: 2rem;
+    color: #333;
+    /* Dark text for a professional look */
+    margin-bottom: 10px;
+}
+
+.invoice-content pre {
+    text-align: left;
+    background: #f4f4f4;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+.invoice-details {
+    width: 100%;
+    /* Make details span full width */
+    text-align: left;
+    padding: 0 20px;
+    /* Add padding for spacing */
+}
+
+.btn-proceed {
+    background: #4CAF50;
+    /* Green color for the button */
+    color: white;
+    padding: 12px 25px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+    /* Make the text all caps */
+}
+
+.btn-proceed:hover {
+    background: #45a049;
+    /* Darker green on hover */
+}
+
+.invoice-details p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    /* Space between lines */
+    line-height: 1.6;
+    /* Better readability */
 }
 
 .menu-item-content {
     position: relative;
     z-index: 1;
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
 .menu-item-header {
@@ -190,6 +298,12 @@ body {
 .menu-item-title {
     font-size: 1.25rem;
     font-weight: bold;
+}
+
+.menu-item p {
+    flex-grow: 1;
+    /* Pushes the button to the bottom */
+    margin-bottom: 1rem;
 }
 
 .menu-item-price {
@@ -232,6 +346,8 @@ body {
 }
 
 .btn {
+    align-self: center;
+    /* Center the button horizontally */
     background: var(--accent);
     color: var(--primary);
     padding: 0.75rem 1.5rem;
@@ -330,8 +446,9 @@ footer {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 1000;
+    background: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent black overlay */
+    z-index: 999;
     justify-content: center;
     align-items: center;
     color: white;

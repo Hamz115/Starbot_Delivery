@@ -135,7 +135,7 @@ private:
   }
 
   void executeTaskSequence(double target_x, double target_y, double target_z) {
-    
+
     execute_arm("home");
     rclcpp::sleep_for(std::chrono::seconds(2));
 
@@ -169,21 +169,24 @@ private:
     control_gripper("gripper_close");
     rclcpp::sleep_for(std::chrono::seconds(2));
 
-    navigate_to_position(target_x, target_y, 0.39, true);
+    navigate_to_position(target_x - 0.03, target_y + 0.02, 0.39, true);
     rclcpp::sleep_for(std::chrono::seconds(2));
 
-    navigate_to_position(target_x, target_y, target_z + 0.50, true);
+    navigate_to_position(target_x - 0.03, target_y + 0.02, target_z + 0.50,
+                         true);
     rclcpp::sleep_for(std::chrono::seconds(2));
 
-    navigate_to_position(target_x, target_y, target_z + 0.40, true);
+    navigate_to_position(target_x - 0.03, target_y + 0.02, target_z + 0.40,
+                         true);
     rclcpp::sleep_for(std::chrono::seconds(2));
 
-    navigate_to_position(target_x - 0.03, target_y + 0.02, target_z + 0.33, true);
+    navigate_to_position(target_x - 0.03, target_y + 0.02, target_z + 0.33,
+                         true);
     rclcpp::sleep_for(std::chrono::seconds(2));
 
-    navigate_to_position(target_x - 0.03, target_y + 0.02, target_z + 0.30, true);
+    navigate_to_position(target_x - 0.03, target_y + 0.02, target_z + 0.30,
+                         true);
     rclcpp::sleep_for(std::chrono::seconds(2));
-
 
     control_gripper("gripper_open");
     rclcpp::sleep_for(std::chrono::seconds(2));

@@ -5,9 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StarBots Coffee</title>
-    <!-- Add EventEmitter2 dependency first -->
-    <!-- ROS Libraries -->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+
+    <!-- Styles -->
+
     <link rel="stylesheet" href="styles.css">
+
+    <!-- ROS Libraries -->
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/easeljs/lib/easeljs.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/eventemitter2/lib/eventemitter2.min.js"></script>
@@ -65,6 +69,18 @@
         let ros;
         let isRobotBusy = false;
 
+        // Map drink names to their respective image paths
+        const drinkImages = {
+            "Spiced Pumpkin Latte": "images/Pumpkin.jpg",
+            "Hazelnut Mocha": "images/Hazelnut.jpg",
+            "Irish Cream Coffee": "images/Irish.webp",
+            "Cinnamon Dolce Latte": "images/Cinnamon.jpg",
+            "Iced Coconut Caramel Latte": "images/Coconut.webp",
+            "Iced Lavender Latte": "images/Lavender.jpg",
+            "Iced Mocha Mint": "images/Mocha.jpg",
+            "Iced Honey Almond Latte": "images/Almond.jpg"
+        };
+
         function connectToBridge() {
             const bridgeAddress = document.getElementById('bridge-address').value.trim();
 
@@ -110,11 +126,6 @@
         }
 
         function orderItem(itemName) {
-            if (!ros || !ros.isConnected) {
-                alert('Please connect to ROSbridge first to place an order!');
-                return;
-            }
-
             if (isRobotBusy) {
                 alert('Robot is currently busy with another order. Please wait.');
                 return;
@@ -123,39 +134,78 @@
             isRobotBusy = true;
             document.getElementById('loading-overlay').style.display = 'flex';
 
-            const orderTopic = new ROSLIB.Topic({
-                ros: ros,
-                name: '/coffee_orders',
-                messageType: 'std_msgs/String'
-            });
+            // Start a timeout to display the invoice after 60 seconds
+            setTimeout(() => {
+                document.getElementById('loading-overlay').style.display = 'none';
+                isRobotBusy = false;
 
-            // Simply send the drink name
-            const order = new ROSLIB.Message({
-                data: itemName
-            });
+                // Fetch the image URL from the mapping object
+                const imageUrl = drinkImages[itemName] || "images/default.jpg"; // Fallback to a default image if not found
 
-            // Subscribe to feedback
-            const feedbackTopic = new ROSLIB.Topic({
-                ros: ros,
-                name: '/robot_feedback',
-                messageType: 'std_msgs/String'
-            });
+                // Display invoice
+                displayInvoice(
+                    itemName,
+                    `$5.99`, // Example price
+                    `Delivered`, // Example status
+                    imageUrl
+                );
+            }, 60000); // 60 seconds
 
-            feedbackTopic.subscribe(function (message) {
-                if (message.data.includes('completed')) {
-                    isRobotBusy = false;
-                    document.getElementById('loading-overlay').style.display = 'none';
-                    alert(`Your ${itemName} is ready!`);
-                    feedbackTopic.unsubscribe();
-                } else if (message.data.includes('error')) {
-                    isRobotBusy = false;
-                    document.getElementById('loading-overlay').style.display = 'none';
-                    alert('There was an error preparing your order. Please try again.');
-                    feedbackTopic.unsubscribe();
-                }
-            });
+            // ROS logic to send order
+            if (ros && ros.isConnected) {
+                const orderTopic = new ROSLIB.Topic({
+                    ros: ros,
+                    name: '/coffee_orders',
+                    messageType: 'std_msgs/String'
+                });
 
-            orderTopic.publish(order);
+                const order = new ROSLIB.Message({
+                    data: itemName
+                });
+
+                orderTopic.publish(order);
+            }
+        }
+
+        // Function to display the invoice
+        function displayInvoice(drinkName, price, status, imageUrl) {
+            const invoiceSection = document.getElementById('invoice');
+            if (!invoiceSection) {
+                const section = document.createElement('div');
+                section.id = 'invoice';
+                section.className = 'invoice-popup';
+                section.innerHTML = `
+                <div class="invoice-content">
+                    <h2>Invoice</h2>
+                    <img id="drink-image" src="${imageUrl}" alt="${drinkName}">
+                    <hr>
+                    <div class="invoice-details">
+                        <p><strong>Drink:</strong> ${drinkName}</p>
+                        <p><strong>Price:</strong> ${price}</p>
+                        <p><strong>Status:</strong> ${status}</p>
+                    </div>
+                    <hr>
+                    <button onclick="closeInvoice()" class="btn btn-proceed">Proceed to Payment</button>
+                </div>
+            `;
+                document.body.appendChild(section);
+            } else {
+                document.getElementById('drink-image').src = imageUrl;
+                document.getElementById('drink-image').alt = drinkName;
+                const invoiceDetails = document.querySelector('.invoice-details');
+                invoiceDetails.innerHTML = `
+                <p><strong>Drink:</strong> ${drinkName}</p>
+                <p><strong>Price:</strong> ${price}</p>
+                <p><strong>Status:</strong> ${status}</p>
+            `;
+            }
+
+            document.getElementById('invoice').style.display = 'flex';
+        }
+
+        // Function to close the invoice popup
+        function closeInvoice() {
+            document.getElementById('invoice').style.display = 'none';
         }
     </script>
 

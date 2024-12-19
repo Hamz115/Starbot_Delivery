@@ -14,22 +14,29 @@ public:
 
     feedback_publisher_ =
         this->create_publisher<std_msgs::msg::String>("/robot_feedback", 10);
+    invoice_publisher_ =
+        this->create_publisher<std_msgs::msg::String>("/order_invoice", 10);
   }
 
 private:
   void order_callback(const std_msgs::msg::String::SharedPtr msg) {
     std::string drink_name = msg->data;
     std::string launch_command = "ros2 launch robot_trajectory_manipulation ";
+    std::string price;
 
-    // Determine which launch file to use based on the drink
-    if (drink_name == "Classic Espresso") {
+    // Handle Hot Drinks
+    if (drink_name == "Spiced Pumpkin Latte") {
       launch_command += "hole_placement_1.launch.py";
-    } else if (drink_name == "Caramel Macchiato") {
+      price = "$5.49";
+    } else if (drink_name == "Hazelnut Mocha") {
       launch_command += "hole_placement_2.launch.py";
-    } else if (drink_name == "Matcha Latte") {
+      price = "$5.99";
+    } else if (drink_name == "Irish Cream Coffee") {
       launch_command += "hole_placement_3.launch.py";
-    } else if (drink_name == "Vanilla Frappuccino") {
+      price = "$5.49";
+    } else if (drink_name == "Cinnamon Dolce Latte") {
       launch_command += "hole_placement_4.launch.py";
+      price = "$6.49";
     } else {
       auto feedback = std::make_unique<std_msgs::msg::String>();
       feedback->data = "Error: Unknown drink order";
@@ -41,16 +48,31 @@ private:
     int result = system(launch_command.c_str());
 
     auto feedback = std::make_unique<std_msgs::msg::String>();
+    auto invoice = std::make_unique<std_msgs::msg::String>();
+
     if (result == 0) {
       feedback->data = "Order completed successfully";
+
+      // Publish invoice details
+      invoice->data =
+          "Drink: " + drink_name + "\nPrice: " + price + "\nStatus: Completed";
+      invoice_publisher_->publish(*invoice);
+
     } else {
       feedback->data = "Error processing order";
+
+      // Publish error invoice
+      invoice->data = "Drink: " + drink_name + "\nPrice: " + price +
+                      "\nStatus: Error processing order";
+      invoice_publisher_->publish(*invoice);
     }
+
     feedback_publisher_->publish(*feedback);
   }
 
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr feedback_publisher_;
+  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr invoice_publisher_;
 };
 
 int main(int argc, char **argv) {
